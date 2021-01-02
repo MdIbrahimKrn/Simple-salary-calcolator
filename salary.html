@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Salary Calculation</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <!-- custom style file  -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body style="background: #222">
+    <div class="container shadow-lg bg-dark text-light rounded py-3">
+      <form class="was-validated">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="main_salary">* Enter Your Salary:</label>
+              <div class="input-group shadow-sm">
+                <input
+                  required
+                  onfocusout="valid.x= this.value"
+                  type="number"
+                  placeholder="বেসিক বেতন লিখুন...."
+                  class="form-control"
+                  id="main_salary"
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text border-0">RM</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="works_d">* Enter Your Works day:</label>
+              <div class="input-group shadow-sm">
+                <input
+                  required
+                  onfocusout="valid.y= this.value"
+                  type="number"
+                  placeholder="মাসে মোট কত দিন কাজ করেছেন.... "
+                  class="form-control"
+                  id="works_d"
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text border-0">Days</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="ot_h"> Enter Your OT Hours:</label>
+              <div class="input-group shadow-sm">
+                <input
+                  type="number"
+                  placeholder="মোট ওটির সংখ্যা লিখুন......"
+                  class="border-0 form-control"
+                  id="ot_h"
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text border-0">Hours</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="per_ot_%"> Per hour OT (%):</label>
+              <div class="input-group shadow-sm">
+                <input
+                  type="number"
+                  placeholder="ওটি বেসিকের কত গুণ?.."
+                  onchange="check(this)"
+                  class="border-0 form-control"
+                  id="per_ot_%"
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text border-0">%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="per_ot"> Per Hour OT (RM):</label>
+              <div class="input-group shadow-sm">
+                <input
+                  type="number"
+                  placeholder="1 ঘন্টা ওটি কত  টাকা..."
+                  onchange="check(this)"
+                  on
+                  class="border-0 form-control"
+                  id="per_ot"
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text border-0">RM</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="Bonus"> Allowance:</label>
+              <div class="input-group shadow-sm">
+                <input
+                  type="number"
+                  placeholder="এলাউন্স/বোনাস এর পরিমান..."
+                  class="border-0 form-control"
+                  id="Bonus"
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text border-0">RM</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="mc_r"> MC Receipt:</label>
+              <div class="input-group shadow-sm">
+                <input
+                  type="number"
+                  placeholder="ঔষধ-এর টাকা..."
+                  class="border-0 form-control"
+                  id="mc_r"
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text border-0">RM</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="advance"> Advance:</label>
+              <div class="input-group shadow-sm">
+                <input
+                  type="number"
+                  placeholder="অগ্রিম দেওয়া টাকার সংখ্যা.."
+                  class="border-0 form-control"
+                  id="advance"
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text border-0">RM</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="btn-group w-100">
+              <button type="button" id="button" class="w-75 btn btn-primary">
+                Click For calculate...
+              </button>
+              <button
+                type="reset"
+                id="button-reset"
+                class="btn btn-primary opacity_8"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="row mt-5">
+        <div class="col-md-10 mx-auto">
+          <h2 class="text-center font-italic">Here Your Result</h2>
+          <div class="table-responsive">
+            <table
+              style="background-color: black"
+              class="text-center table table-striped text-muted rounded"
+            >
+              <thead class="thead-light text-capitalize">
+                <tr>
+                  <th>Basic Rate</th>
+                  <th>Work Days</th>
+                  <th>Total Basic</th>
+                  <th>OT Rate</th>
+                  <th>OT Hours</th>
+                  <th>Total OT</th>
+                  <th>MC/allawance</th>
+                  <th>gross Pay</th>
+                  <th>advance</th>
+                  <th>Nett Salary</th>
+                </tr>
+                <!-- <tr>
+                  <th>দিনের বেসিক</th>
+                  <th>দিনের সংখ্যা</th>
+                  <th>মোট বেসিক</th>
+                  <th>ওটির টাকা</th>
+                  <th>ওটির পরি :</th>
+                  <th>মোট ওটির টাকা</th>
+                  <th>ঔষধ/বোনাস</th>
+                  <th>মাসিক মোট</th>
+                  <th>অগ্রিম টাকা</th>
+                  <th>মোট বেতন</th>
+                </tr> -->
+              </thead>
+              <tbody id="table">
+                <tr>
+                  <td>0.00</td>
+                  <td>0</td>
+                  <td>0.00</td>
+                  <td>0.00</td>
+                  <td>0</td>
+                  <td>0.00</td>
+                  <td>0/0</td>
+                  <td>0.00</td>
+                  <td>0</td>
+                  <td>0.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- main js  -->
+    <script src="main.js"></script>
+  </body>
+</html>
