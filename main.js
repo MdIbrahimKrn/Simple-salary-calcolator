@@ -47,6 +47,8 @@ resetBtn.addEventListener("click", () => {
   let c = document.getElementById("per_ot_%");
   b.removeAttribute("disabled");
   c.removeAttribute("disabled");
+  valid.x = null;
+  valid.y = null;
 });
 
 // main function
