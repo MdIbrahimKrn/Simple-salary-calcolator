@@ -88,7 +88,7 @@
                 <input
                   type="number"
                   placeholder="ওটি বেসিকের কত গুণ?.."
-                  onchange="check(this)"
+                  onkeyUp="check(this)"
                   class="border-0 form-control"
                   id="per_ot_%"
                 />
@@ -105,7 +105,7 @@
                 <input
                   type="number"
                   placeholder="1 ঘন্টা ওটি কত  টাকা..."
-                  onchange="check(this)"
+                  onkeyUp="check(this)"
                   on
                   class="border-0 form-control"
                   id="per_ot"
@@ -186,6 +186,7 @@
       <div class="row mt-5">
         <div class="col-md-10 mx-auto">
           <h2 class="text-center font-italic">Here Your Result</h2>
+	  <span id="time"></span>
           <div class="table-responsive">
             <table
               style="background-color: black"
