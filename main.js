@@ -135,7 +135,7 @@ const calculate = (e) => {
   showdata([object]);
 
   if (typeof Storage !== "undefined") {
-    setStorage("data", object);
+    setStorage("dataCal", object);
   }
 }; //main funcion end
 
@@ -176,7 +176,7 @@ function showdata(data) {
 
 }
 if (typeof Storage !== "undefined") {
-  showdata(getStorage("data"));
+  showdata(getStorage("dataCal"));
 }
 // call main function
 button.addEventListener("click", () => {
