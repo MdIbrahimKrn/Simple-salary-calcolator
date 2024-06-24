@@ -1,6 +1,58 @@
 table thead tr th {
   vertical-align: middle !important;
 }
+
 .opacity_8 {
   opacity: 0.8;
+}
+
+.table-responsive {
+  max-height: 350px;
+}
+
+.table-head {
+  position: sticky;
+  top: 0;
+}
+
+tr {
+  position: relative;
+}
+
+.show-date,
+.show-date::after {
+  position: absolute;
+  transform: translate(-50%, 0) scale(var(--scale));
+  transition: transform 200ms ease-in;
+  z-index: 99;
+
+}
+
+.show-date {
+  --toltip-color: rgba(100, 100, 100);
+  --scale: 0;
+  --arrow-size: 10px;
+  background-color: var(--toltip-color);
+  color: black;
+  border-radius: 5px;
+  padding: 5px;
+  left: 50%;
+  top: -90%;
+  transform-origin: center bottom;
+}
+
+
+.show-date::after {
+  content: "";
+  top: 100%;
+  left: 50%;
+  border: var(--arrow-size) solid transparent;
+  border-top-color: var(--toltip-color);
+  transform-origin: center top;
+
+}
+
+tr:hover .show-date,
+tr:hover .show-date::after {
+  --scale: 1;
 }
