@@ -1,21 +1,32 @@
 // set localStorage function
 function setStorage(nam, obj) {
+
   if (typeof nam != "undefined" && typeof obj != "undefined") {
-    const string = JSON.stringify(obj);
-    localStorage.setItem(nam, string);
+    const vall = getStorage(nam)
+    if (vall != null) {
+      vall.push(obj)
+      const string = JSON.stringify(vall);
+      localStorage.setItem(nam, string);
+    } else if(vall == null) {
+
+      obj = [obj]
+      const string = JSON.stringify(obj);
+      localStorage.setItem(nam, string);
+    }
+
   } else {
-    console.log("arguments not be empty");
+    alert("arguments not be empty");
   }
 }
 
+
 // get localStorage function
 function getStorage(nam) {
-  return typeof nam != "undefined"
-    ? localStorage.getItem(nam) !== null
-      ? JSON.parse(localStorage.getItem(nam))
-      : "value null"
-    : "argument not be empty";
+  return JSON.parse(localStorage.getItem(nam)) 
+  
 }
+
+
 
 // input disebled
 let valid = {};
@@ -39,7 +50,9 @@ let timeid = document.getElementById("time");
 
 // get button
 const button = document.getElementById("button");
+const table_responsive = document.getElementById("table-responsive");
 const resetBtn = document.getElementById("button-reset");
+const dateEl = document.getElementById("show-date");
 
 // remove disabled attrivute
 resetBtn.addEventListener("click", () => {
@@ -64,6 +77,7 @@ const calculate = (e) => {
   let advanceE = document.getElementById("advance").value;
   let table = document.getElementById("table");
 
+
   // convert input value string to integer
   const mainSalary = Number(main_salary);
   const workDays = Number(works_d);
@@ -73,6 +87,7 @@ const calculate = (e) => {
   const allowance = Number(Bonus);
   const mcReceipt = Number(mc_r);
   const advance = Number(advanceE);
+
 
   // Overtime calculate
   function OTcal(perOT, perPar, perDays) {
@@ -89,18 +104,22 @@ const calculate = (e) => {
   // main calculate start
   let nitSalary, nitOT;
   let perDays = mainSalary / 26;
+  let weeklyHour = 45;
+  let weeklyDays = 6
+  let perHour = perDays / (weeklyHour/weeklyDays)
+  let absent = perHour * workDays
 
   // function call for Overtime calculate
   let OTrate = OTcal(perOT, perPar, perDays);
   nitOT = totalOT * OTrate;
-  nitSalary = perDays * workDays;
+  nitSalary = mainSalary - absent;
   let ans = nitSalary + nitOT + mcReceipt + allowance;
   let nettSalary = ans - advance;
 
   // Output object
   object = {
     operDay: perDays.toFixed(2),
-    oworkDays: workDays,
+    oworkDays: absent.toFixed(2),
     onitSalary: nitSalary.toFixed(2),
     oOTrate: OTrate.toFixed(2),
     ototalOT: totalOT,
@@ -108,64 +127,57 @@ const calculate = (e) => {
     omcReceipt: mcReceipt,
     oallowance: allowance,
     oans: ans.toFixed(2),
-    oadvance: advance,
+    oadvance: advance.toFixed(2),
     onettSalary: nettSalary.toFixed(2),
-    time: new Date().toLocaleString(),
+    time: new Date().toLocaleString()
   };
+
+  showdata([object]);
 
   if (typeof Storage !== "undefined") {
     setStorage("data", object);
-    showdata();
-  } else {
-    let result = `
-            <tr>
-              <td>${object.operDay}</td>
-              <td>${object.oworkDays}</td>
-              <td>${object.onitSalary}</td>
-              <td>${object.oOTrate}</td>
-              <td>${object.ototalOT}</td>
-              <td>${object.onitOT}</td>
-              <td>
-                ${object.omcReceipt}/${object.oallowance}
-              </td>
-              <td>${object.oans}</td>
-              <td>${object.oadvance}</td>
-              <td>${object.onettSalary}</td>
-            </tr>
-           `;
-
-    table.innerHTML = result;
   }
 }; //main funcion end
 
-// show old storage data
-function showdata() {
-  if (typeof Storage !== "undefined") {
-    let data = getStorage("data");
-    let result = `
-            <tr>
-              <td>${data.operDay}</td>
-              <td>${data.oworkDays}</td>
-              <td>${data.onitSalary}</td>
-              <td>${data.oOTrate}</td>
-              <td>${data.ototalOT}</td>
-              <td>${data.onitOT}</td>
-              <td>
-                ${data.omcReceipt}/${data.oallowance}
-              </td>
-              <td>${data.oans}</td>
-              <td>${data.oadvance}</td>
-              <td>${data.onettSalary}</td>
-            </tr>
-           `;
-    table.innerHTML = result;
-    timeid.innerHTML = `Your last calculaton : ${data.time}`;
-  } else {
-    console.log("Storage not supported");
-  }
-}
-showdata();
+function showDate(e) {
 
+  const el = e.target.parentElement;
+  let top = e.clientY
+  dateEl.innerText = el.dataset.date
+  dateEl.style.display = "block"
+  dateEl.style.top = top + "px";
+}
+// show old storage data
+function showdata(data) {
+  if (!data) return;
+  for (let x = 0; x < data.length; x++) {
+
+    let result = document.createElement("tr");
+    result.dataset.date = data[x].time;
+    result.onclick = showDate;
+
+    result.innerHTML = `
+            <td >${data[x].operDay}</td>
+            <td>${data[x].oworkDays}</td>
+            <td>${data[x].onitSalary}</td>
+            <td>${data[x].oOTrate}</td>
+            <td>${data[x].ototalOT}</td>
+            <td>${data[x].onitOT}</td>
+            <td>
+              ${data[x].omcReceipt}/${data[x].oallowance}
+            </td>
+            <td>${data[x].oans}</td>
+            <td>${data[x].oadvance}</td>
+            <td>${data[x].onettSalary}</td>
+            <span class ="show-date" id ="show-date">${data[x].time}</span>`
+    table.prepend(result);
+  }
+  table_responsive.scrollTop = 0;
+
+}
+if (typeof Storage !== "undefined") {
+  showdata(getStorage("data"));
+}
 // call main function
 button.addEventListener("click", () => {
   if (valid.x && valid.y) {
@@ -174,3 +186,5 @@ button.addEventListener("click", () => {
     alert("Please fill in the integer number in the  required field...");
   }
 });
+
+table_responsive.addEventListener("click", (e) => { console.log(e) })
